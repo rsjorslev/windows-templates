@@ -39,7 +39,7 @@
         "remote_cache_directory": "packer-cache",
         "iso_url": "{{user `iso_url`}}",
         "iso_checksum": "{{user `iso_md5`}}",
-        "iso_checksum_type": "md5",
+        "iso_checksum_type": "none",
         "shutdown_command": "shutdown /s /t 10 /f /d p:4:1 /c \"Packer Shutdown\"",
         "guest_os_type": "windows9srv-64",
         "tools_upload_flavor": "windows",

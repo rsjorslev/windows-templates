@@ -25,7 +25,7 @@ pipeline {
     ESXI_HOST = 'esx01.tstdmn.dk'
     DVPORTGROUP_ID = 'dvportgroup-67'
     SWITCH_ID = '50 18 a9 9e 92 d0 de cd-1a 88 ce bc 53 3c 03 d1'
-    DATASTORE = 'vsphere01'
+    DATASTORE = 'ssd-raid0-001'
     PACKER_LOG = '1'
   }
 }
