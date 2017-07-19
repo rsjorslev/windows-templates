@@ -56,6 +56,8 @@
         "vmx_data": {
           "memsize": "{{user `memory`}}",
           "numvcpus": "{{user `cpus`}}",
+          "virtualhw.version": "13",
+          "scsi0.virtualDev": "lsisas1068",
           "ethernet0.dvs.portgroupid": "{{user `dvportgroupid`}}",
           "ethernet0.dvs.switchid": "{{user `switchid`}}"
         }
