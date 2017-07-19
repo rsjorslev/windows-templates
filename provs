@@ -1,0 +1,17 @@
+"provisioners": [
+{
+  "type": "shell",
+  "execute_command": "echo 'runner' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+  "script": "scripts/ansible.sh"
+},
+{
+  "type": "shell",
+  "execute_command": "echo 'runner' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+  "script": "scripts/setup.sh"
+},
+{
+  "type": "ansible-local",
+  "playbook_file": "ansible/playbook.yml",
+  "playbook_dir": "ansible"
+}
+]
