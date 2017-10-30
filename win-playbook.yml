@@ -1,0 +1,12 @@
+---
+- name: windows-example.yml
+  hosts: windows
+
+  tasks:
+    - name: list directory
+      raw: dir
+
+    - name: install firefox
+      win_chocolatey:
+        name: firefox
+        state: present
