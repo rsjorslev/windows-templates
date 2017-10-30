@@ -7,6 +7,7 @@
         "network": "VM Network",
         "winrm_name": "runner",
         "winrm_pass": "runner",
+        "vc_pass": "{{env `VC_PASS`}}",
         "esxi_user": "{{env `ESXI_USER`}}",
         "esxi_pass": "{{env `ESXI_PASS`}}",
         "esxi_host": "{{env `ESXI_HOST`}}",
@@ -62,5 +63,14 @@
           "ethernet0.dvs.portgroupid": "{{user `dvportgroupid`}}",
           "ethernet0.dvs.switchid": "{{user `switchid`}}"
         }
+    }],
+    "post-processors": [{
+      "type": "vsphere-template",
+      "host": "vcsa01.tstdmn.dk",
+      "insecure": true,
+      "username": "administrator@vsphere.local",
+      "password": "{{user `vc_pass`}}",
+      "datacenter": "Datacenter",
+      "folder": "/Templates"
     }]
 }
