@@ -1,8 +1,8 @@
 {
     "variables": {
-        "memory": "2028",
+        "memory": "4096",
         "cpus": "2",
-        "disk": "40960",
+        "disk": "61440",
         "vm_name": "win2016tmpl-{{timestamp}}",
         "network": "VM Network",
         "winrm_name": "runner",
@@ -60,6 +60,7 @@
           "memsize": "{{user `memory`}}",
           "numvcpus": "{{user `cpus`}}",
           "scsi0.virtualDev": "lsisas1068",
+          "ethernet0.virtualDev": "e1000e",
           "ethernet0.dvs.portgroupid": "{{user `dvportgroupid`}}",
           "ethernet0.dvs.switchid": "{{user `switchid`}}"
         }
@@ -67,7 +68,7 @@
     "provisioners": [
       {
         "type":  "ansible",
-        "playbook_file": "./win-playbook.yml",
+        "playbook_file": "ansible/win2016std.yml",
         "groups": ["windows"],
         "extra_arguments": [
           "--connection", "packer",
