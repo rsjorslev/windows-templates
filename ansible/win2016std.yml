@@ -21,5 +21,9 @@
         data: 0
         type: string
 
-    - name: Enable CredSSP with WinRM
-      win_shell: Enable-WSManCredSSP -Role Server -Force
+    - name: Enable Remote Desktop
+      win_regedit:
+        path: HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server
+        name: fDenyTSConnections
+        data: 0
+        type: dword

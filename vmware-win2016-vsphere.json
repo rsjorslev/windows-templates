@@ -74,6 +74,10 @@
           "--connection", "packer",
           "--extra-vars", "ansible_shell_type=powershell ansible_shell_executable=None"
         ]
+      },
+      {
+        "type": "windows-shell",
+        "inline": ["winrm set winrm/config/service/auth '@{Basic="false"}'"]
       }
     ],
     "post-processors": [{
