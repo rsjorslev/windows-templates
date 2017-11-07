@@ -43,7 +43,7 @@
         "iso_url": "{{user `iso_url`}}",
         "iso_checksum": "{{user `iso_checksum`}}",
         "iso_checksum_type": "none",
-        "shutdown_command": "shutdown /s /t 999 /f /d p:4:1 /c \"Packer Shutdown\"",
+        "shutdown_command": "C:/Windows/packer/PackerShutdown.bat",
         "guest_os_type": "windows9srv-64",
         "tools_upload_flavor": "windows",
         "disk_size" : "{{user `disk`}}",
@@ -74,6 +74,15 @@
           "--connection", "packer",
           "--extra-vars", "ansible_shell_type=powershell ansible_shell_executable=None"
         ]
+      },
+      {
+        "type": "powershell",
+        "script": "scripts/save_shutdown_command.ps1"
+      },
+      {
+        "type": "file",
+        "source": "scripts/winrm_ansible.ps1",
+        "destination": "C:/Windows/packer/winrm_ansible.ps1"
       }
     ],
     "post-processors": [{
