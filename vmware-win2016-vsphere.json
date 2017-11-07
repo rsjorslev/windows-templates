@@ -27,7 +27,7 @@
         "winrm_username": "{{user `winrm_name`}}",
         "winrm_password": "{{user `winrm_pass`}}",
         "winrm_timeout": "12h",
-        "shutdown_timeout": "15m",
+        "shutdown_timeout": "30m",
         "keep_registered": true,
         "vnc_disable_password": true,
         "vnc_port_min": "5900",
