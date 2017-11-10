@@ -1,4 +1,7 @@
 {
+    "variables": {
+        "vm_name": "win2016tmpl-{{timestamp}}",
+    },
     "builders": [{
         "type": "vmware-iso",
         "output_directory": "{{user `vm_name`}}",

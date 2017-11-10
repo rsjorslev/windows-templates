@@ -2,7 +2,6 @@
     "memory": "4096",
     "cpus": "2",
     "disk": "61440",
-    "vm_name": "win2016tmpl-{{timestamp}}",
     "network": "VM Network",
     "winrm_name": "runner",
     "winrm_pass": "runner",
