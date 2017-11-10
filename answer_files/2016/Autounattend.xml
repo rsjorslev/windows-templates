@@ -99,18 +99,6 @@
           <Value>runner</Value>
           <PlainText>true</PlainText>
         </AdministratorPassword>
-        <LocalAccounts>
-          <LocalAccount wcm:action="add">
-            <Password>
-              <Value>runner</Value>
-              <PlainText>true</PlainText>
-            </Password>
-            <Group>administrators</Group>
-            <DisplayName>Runner</DisplayName>
-            <Name>runner</Name>
-            <Description>Runner User</Description>
-          </LocalAccount>
-        </LocalAccounts>
       </UserAccounts>
             <AutoLogon>
                 <Password>
@@ -118,7 +106,7 @@
                     <PlainText>true</PlainText>
                 </Password>
                 <Enabled>true</Enabled>
-                <Username>runner</Username>
+                <Username>Administrator</Username>
             </AutoLogon>
       <FirstLogonCommands>
           <SynchronousCommand wcm:action="add">

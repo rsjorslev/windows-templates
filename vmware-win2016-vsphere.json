@@ -1,6 +1,6 @@
 {
     "variables": {
-        "vm_name": "win2016tmpl-{{timestamp}}",
+        "vm_name": "win2016tmpl-{{timestamp}}"
     },
     "builders": [{
         "type": "vmware-iso",
