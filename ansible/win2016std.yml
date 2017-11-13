@@ -9,9 +9,6 @@
         version: "{{ item.version }}"
         state: present
       with_items:
-        - { name: 'notepadplusplus.install', version: '7.3' }
-        - { name: 'googlechrome', version: '62.0.3202.89' }
-        - { name: '7zip.install', version: '16.4.0.20170506' }
         - { name: 'vmware-tools', version: '10.1.15.6677369' }
 
     - name: Disable autologin
