@@ -2,7 +2,7 @@
     "memory": "4096",
     "cpus": "2",
     "disk": "61440",
-    "network": "VM Network",
+    "network": "Packer-Skull",
     "winrm_name": "administrator",
     "winrm_pass": "runner",
     "vc_pass": "{{env `VC_PASS`}}",
