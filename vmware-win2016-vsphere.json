@@ -36,7 +36,7 @@
         "http_port_max" : 9020,
         "boot_wait": "2m",
         "floppy_files": [
-            "answer_files/2016/Autounattend.xml",
+            "answer_files/win2016/Autounattend.xml",
             "scripts/winrm.ps1"
         ],
         "vmx_data": {

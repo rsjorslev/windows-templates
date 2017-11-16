@@ -11,9 +11,6 @@ trap {
     Exit 1
 }
 
-## for troubleshoot purposes, save the current user details. this will be later displayed by provision.ps1.
-#whoami /all >C:\whoami-autounattend.txt
-
 if (![Environment]::Is64BitProcess) {
     throw 'this must run in a 64-bit PowerShell session'
 }
@@ -24,7 +21,24 @@ if (!(New-Object System.Security.Principal.WindowsPrincipal(
     throw 'this must run with Administrator privileges (e.g. in a elevated shell session)'
 }
 
-# configure WinRM.
+# Don't bother if the operating system is older than Vista
+if([environment]::OSVersion.version.Major -lt 6) { return }
+
+# Cannot change the network location if you are joined to a domain, so abort
+if(1,3,4,5 -contains (Get-WmiObject win32_computersystem).DomainRole) { return }
+
+# Get network connections
+$networkListManager = [Activator]::CreateInstance([Type]::GetTypeFromCLSID([Guid]"{DCB00C01-570F-4A9B-8D69-199FDBA5723B}"))
+$connections = $networkListManager.GetNetworkConnections()
+
+$connections |foreach {
+	Write-Host $_.GetNetwork().GetName()"category was previously set to"$_.GetNetwork().GetCategory()
+	$_.GetNetwork().SetCategory(1)
+	Write-Host $_.GetNetwork().GetName()"changed to category"$_.GetNetwork().GetCategory()
+}
+
+# Configure WinRM.
+winrm quickconfig -q
 netsh advfirewall firewall add rule name="WinRM-HTTP" dir=in localport=5985 protocol=TCP action=allow
 winrm set winrm/config/service '@{AllowUnencrypted="true"}'
 winrm set winrm/config/service/auth '@{Basic="true"}'
