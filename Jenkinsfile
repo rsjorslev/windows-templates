@@ -10,12 +10,12 @@ pipeline {
     }
     stage('Validate') {
       steps {
-        sh '${PACKER}/packer validate vmware-win2016.json'
+        sh '${PACKER}/packer validate -var-file variables.json vmware-win2016-vsphere.json'
       }
     }
     stage('Build') {
       steps {
-        sh '${PACKER}/packer build vmware-win2016.json'
+        sh '${PACKER}/packer build -var-file variables.json vmware-win2016-vsphere.json'
       }
     }
   }
