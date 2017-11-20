@@ -14,9 +14,8 @@
         - { name: 'vcredist2012' }
         - { name: 'vcredist2013' }
         - { name: 'vcredist2017' }
-        - { name: 'dotnet3.5' }
         - { name: 'dotnet4.7.1' }
-        - { name: 'vmware-tools', version: '10.1.15.6677369' }
+        - { name: 'vmware-tools' }
 
     - name: Disable autologin
       win_regedit:

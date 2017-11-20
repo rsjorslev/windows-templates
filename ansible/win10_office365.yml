@@ -1,0 +1,10 @@
+---
+- name: win10_office365.yml
+  hosts: windows
+  tasks:
+
+    - name: Installing Office
+      win_chocolatey:
+        name: "{{ item.name }}"
+        state: present
+      with_items: "{{ office_data }}"
