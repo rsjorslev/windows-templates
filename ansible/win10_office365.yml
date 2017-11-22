@@ -5,6 +5,5 @@
 
     - name: Installing Office
       win_chocolatey:
-        name: "{{ item.name }}"
+        name: "{{ office_data.name }}"
         state: present
-      with_items: "{{ office_data }}"

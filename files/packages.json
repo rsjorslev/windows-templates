@@ -1,0 +1,29 @@
+[
+	{
+		"name": "notepadplusplus",
+		"version": "7.5.1",
+		"installArguments": "",
+		"packageParameters": "",
+		"forceX86": false,
+		"allowMultipleVersions": false,
+		"ignoreDependencies": false
+	},
+	{
+		"name": "vmware-horizon-client",
+		"version": "4.4.0",
+		"installArguments": "",
+		"packageParameters": "",
+		"forceX86": false,
+		"allowMultipleVersions": false,
+		"ignoreDependencies": false
+	},
+	{
+		"name": "7zip",
+		"version": "16.4.0.20170506",
+		"installArguments": "",
+		"packageParameters": "",
+		"forceX86": false,
+		"allowMultipleVersions": false,
+		"ignoreDependencies": false
+	}
+]

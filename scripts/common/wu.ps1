@@ -13,6 +13,8 @@ function LogWrite {
 }
 
 function Check-ContinueRestartOrEnd() {
+    Set-Service -Name "WinRM" -StartupType Disabled
+
     $RegistryKey = "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run"
     $RegistryEntry = "InstallWindowsUpdates"
     switch ($global:RestartRequired) {
@@ -22,7 +24,6 @@ function Check-ContinueRestartOrEnd() {
                 LogWrite "Restart Registry Entry Exists - Removing It"
                 Remove-ItemProperty -Path $RegistryKey -Name $RegistryEntry -ErrorAction SilentlyContinue
             }
-
             LogWrite "No Restart Required"
             Check-WindowsUpdates
 
@@ -30,10 +31,14 @@ function Check-ContinueRestartOrEnd() {
                 Install-WindowsUpdates
             } elseif ($script:Cycles -gt $global:MaxCycles) {
                 LogWrite "Exceeded Cycle Count - Stopping"
-                Invoke-Expression "a:\winrm.ps1"
+                Set-Service -Name "WinRM" -StartupType Automatic
+                Restart-Computer -Force
+                break
             } else {
                 LogWrite "Done Installing Windows Updates"
-                Invoke-Expression "a:\winrm.ps1"
+                Set-Service -Name "WinRM" -StartupType Automatic
+                Restart-Computer -Force
+                break
             }
         }
         1 {
@@ -125,7 +130,8 @@ function Install-WindowsUpdates() {
         LogWrite 'No updates available to install...'
         $global:MoreUpdates=0
         $global:RestartRequired=0
-        Invoke-Expression "a:\winrm.ps1"
+        Set-Service -Name "WinRM" -StartupType Automatic
+        Restart-Computer -Force
         break
     }
 

@@ -1,50 +1,71 @@
 {
-    "builders": [{
-        "type": "null",
-        "communicator": "winrm",
-        "winrm_host": "192.168.234.235",
-        "winrm_username": "administrator",
-        "winrm_password": "runner",
-        "winrm_use_ssl": true,
-        "winrm_insecure": true,
-        "winrm_timeout": "12h"
-    }],
-    "provisioners": [
-      {
-        "type":  "ansible",
-        "playbook_file": "ansible/win10_baseline.yml",
-        "groups": ["windows"],
-        "extra_arguments": [
-          "--connection", "packer",
-          "--extra-vars", "ansible_shell_type=powershell ansible_shell_executable=None",
-          "--extra-vars", "@ansible/baseline.json"
-        ]
-      },
-      {
-        "type": "windows-restart"
-      },
-      {
-        "type":  "ansible",
-        "playbook_file": "ansible/win10_office365.yml",
-        "groups": ["windows"],
-        "extra_arguments": [
-          "--connection", "packer",
-          "--extra-vars", "ansible_shell_type=powershell ansible_shell_executable=None",
-          "--extra-vars", "@ansible/office365.json"
-        ]
-      },
-      {
-        "type": "windows-restart"
-      },
-      {
-        "type": "powershell",
-        "script": "scripts/app_installer.ps1"
-      },
-      {
-        "type": "windows-shell",
-        "inline": ["dir c:\\"],
-        "start_retry_timeout": "120m",
-        "pause_before": "60s"
-      }
-    ]
+	"builders": [
+		{
+			"type": "null",
+			"communicator": "winrm",
+			"winrm_host": "192.168.234.235",
+			"winrm_username": "administrator",
+			"winrm_password": "runner",
+			"winrm_use_ssl": true,
+			"winrm_insecure": true,
+			"winrm_timeout": "12h"
+		}
+	],
+	"provisioners": [
+		{
+			"type": "windows-shell",
+			"inline": ["mkdir c:\\Windows\\packer"]
+		}
+		{
+			"type": "file",
+			"source": "files/",
+			"destination": "C:/Windows/packer"
+		},
+		{
+			"type": "ansible",
+			"playbook_file": "ansible/win10_baseline.yml",
+			"groups": [
+				"windows"
+			],
+			"extra_arguments": [
+				"--connection", "packer",
+				"--extra-vars", "ansible_shell_type=powershell ansible_shell_executable=None",
+				"--extra-vars", "@files/baseline.json"
+			]
+		},
+		{
+			"type": "windows-restart"
+		},
+		{
+			"type": "ansible",
+			"playbook_file": "ansible/win10_office365.yml",
+			"groups": [
+				"windows"
+			],
+			"extra_arguments": [
+				"--connection", "packer",
+				"--extra-vars", "ansible_shell_type=powershell ansible_shell_executable=None",
+				"--extra-vars", "@files/office365.json"
+			]
+		},
+		{
+			"type": "windows-restart"
+		},
+		{
+			"type": "powershell",
+			"script": "scripts/common/packages_installer.ps1"
+		},
+		{
+			"type": "powershell",
+			"script": "scripts/common/wu.ps1",
+			"start_retry_timeout": "120m",
+			"pause_before": "60s"
+		},
+		{
+			"type": "powershell",
+			"script": "scripts/common/registry.ps1",
+			"start_retry_timeout": "300m",
+			"pause_before": "60s"
+		}
+	]
 }

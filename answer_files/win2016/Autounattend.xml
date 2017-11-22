@@ -127,7 +127,7 @@
         </SynchronousCommand>
         <SynchronousCommand wcm:action="add">
             <Order>5</Order>
-            <CommandLine>PowerShell -File a:\wu.ps1</CommandLine>
+            <CommandLine>PowerShell -File a:\winrm_packer.ps1</CommandLine>
         </SynchronousCommand>
       </FirstLogonCommands>
     </component>
