@@ -3,7 +3,7 @@
 		{
 			"type": "null",
 			"communicator": "winrm",
-			"winrm_host": "192.168.234.235",
+			"winrm_host": "192.168.234.239",
 			"winrm_username": "administrator",
 			"winrm_password": "runner",
 			"winrm_use_ssl": true,
@@ -15,7 +15,7 @@
 		{
 			"type": "windows-shell",
 			"inline": ["mkdir c:\\Windows\\packer"]
-		}
+		},
 		{
 			"type": "file",
 			"source": "files/",
@@ -54,6 +54,12 @@
 		{
 			"type": "powershell",
 			"script": "scripts/common/packages_installer.ps1"
+		},
+		{
+			"type": "powershell",
+			"script": "scripts/win10/Remove-BuiltInAppx.ps1",
+			"start_retry_timeout": "120m",
+			"pause_before": "60s"
 		},
 		{
 			"type": "powershell",

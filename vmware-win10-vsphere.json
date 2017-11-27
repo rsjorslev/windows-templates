@@ -37,9 +37,9 @@
         "http_port_max" : 9020,
         "boot_wait": "2m",
         "floppy_files": [
-            "answer_files/win10/Autounattend.xml",
-            "scripts/winrm.ps1",
-            "scripts/wu.ps1"
+          "answer_files/win10/Autounattend.xml",
+          "scripts/common/winrm_packer.ps1",
+          "scripts/common/wu.ps1"
         ],
         "vmx_data": {
           "memsize": "{{user `memory`}}",
@@ -86,8 +86,8 @@
         "boot_wait": "2m",
         "floppy_files": [
             "answer_files/win10/Autounattend.xml",
-            "scripts/winrm.ps1",
-            "scripts/wu.ps1"
+            "scripts/common/winrm_packer.ps1",
+            "scripts/common/wu.ps1"
         ],
         "vmx_data": {
           "memsize": "{{user `memory`}}",
