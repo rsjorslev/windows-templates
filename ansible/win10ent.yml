@@ -18,7 +18,7 @@
         data: 1
         type: string
 
-    - name: Enable autologin
+    - name: Enable autologin Password
       win_regedit:
         path: HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon
         name: DefaultPassword

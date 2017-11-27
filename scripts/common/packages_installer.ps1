@@ -7,7 +7,7 @@ $Logfile = "C:\Windows\packer\choco-app-install.log"
 $ScriptPath = $MyInvocation.MyCommand.Path
 $RegistryKey = "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run"
 $RegistryEntry = "ChocoPackagesInstall"
-$StateFile = "$($AutOSDir)\state.json"
+$StateFile = "$($AutOSDir)\state_packages.json"
 
 function LogWrite {
    Param ([string]$logstring)
@@ -17,7 +17,6 @@ function LogWrite {
 }
 
 function Install-Packages {
-    Write-host $pwd
     $Packages = Get-Packages
 
     if ((Get-State).started -eq 0) {
@@ -89,7 +88,7 @@ function Get-State {
                     'currentPackage'=0;
                     'morePackages'=0;
                     'backFromReboot'=0}
-        $stateObject = New-Object –TypeName PSObject –Prop $stateProps
+        $stateObject = New-Object -TypeName PSObject -Prop $stateProps
         ConvertTo-Json -InputObject $stateObject | Set-Content -Path $StateFile
         return $stateObject
     }

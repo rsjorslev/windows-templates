@@ -38,8 +38,7 @@
         "boot_wait": "2m",
         "floppy_files": [
           "answer_files/win10/Autounattend.xml",
-          "scripts/common/winrm_packer.ps1",
-          "scripts/common/wu.ps1"
+          "scripts/common/winrm_packer.ps1"
         ],
         "vmx_data": {
           "memsize": "{{user `memory`}}",
@@ -86,8 +85,7 @@
         "boot_wait": "2m",
         "floppy_files": [
             "answer_files/win10/Autounattend.xml",
-            "scripts/common/winrm_packer.ps1",
-            "scripts/common/wu.ps1"
+            "scripts/common/winrm_packer.ps1"
         ],
         "vmx_data": {
           "memsize": "{{user `memory`}}",
@@ -112,11 +110,11 @@
       },
       {
         "type": "powershell",
-        "script": "scripts/save_shutdown_command.ps1"
+        "script": "scripts/common/save_shutdown_command.ps1"
       },
       {
         "type": "file",
-        "source": "scripts/winrm_ansible.ps1",
+        "source": "scripts/common/winrm_ansible.ps1",
         "destination": "C:/Windows/packer/winrm_ansible.ps1"
       }
     ]

@@ -3,7 +3,7 @@
 		{
 			"type": "null",
 			"communicator": "winrm",
-			"winrm_host": "192.168.234.239",
+			"winrm_host": "192.168.234.240",
 			"winrm_username": "administrator",
 			"winrm_password": "runner",
 			"winrm_use_ssl": true,

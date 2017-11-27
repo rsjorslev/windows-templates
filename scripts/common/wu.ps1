@@ -3,7 +3,13 @@ param($global:RestartRequired=0,
         $global:MaxCycles=5,
         $MaxUpdatesPerCycle=500)
 
-$Logfile = "C:\Windows\Temp\win-updates.log"
+$global:AutOSDir = "C:\Windows\packer"
+
+$Logfile = "$($AutOSDir)\win_updates.log"
+$ScriptPath = $MyInvocation.MyCommand.Path
+$RegistryKey = "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run"
+$RegistryEntry = "ChocoPackagesInstall"
+$StateFile = "$($AutOSDir)\state_wu.json"
 
 function LogWrite {
    Param ([string]$logstring)
@@ -32,13 +38,11 @@ function Check-ContinueRestartOrEnd() {
             } elseif ($script:Cycles -gt $global:MaxCycles) {
                 LogWrite "Exceeded Cycle Count - Stopping"
                 Set-Service -Name "WinRM" -StartupType Automatic
-                Restart-Computer -Force
-                break
+                Start-Service -Name "WinRM"
             } else {
                 LogWrite "Done Installing Windows Updates"
                 Set-Service -Name "WinRM" -StartupType Automatic
-                Restart-Computer -Force
-                break
+                Start-Service -Name "WinRM"
             }
         }
         1 {
@@ -49,9 +53,8 @@ function Check-ContinueRestartOrEnd() {
             } else {
                 LogWrite "Restart Registry Entry Exists Already"
             }
-
             LogWrite "Restart Required - Restarting..."
-            Restart-Computer
+            Restart-Computer -Force
         }
         default {
             LogWrite "Unsure If A Restart Is Required"
@@ -168,6 +171,15 @@ function Install-WindowsUpdates() {
 }
 
 function Check-WindowsUpdates() {
+
+    if ((Get-State).started -eq 0) {
+        LogWrite "Windows Update installation not started, rebooting so Packer gets a clean exit code"
+        Set-Service -Name "WinRM" -StartupType Disabled
+        Set-ItemProperty -Path $RegistryKey -Name $RegistryEntry -Value "C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -File $($script:ScriptPath) -MaxUpdatesPerCycle $($MaxUpdatesPerCycle)"
+        Set-Started 1
+        Restart-Computer -Force
+    }
+
     LogWrite "Checking For Windows Updates"
     $Username = $env:USERDOMAIN + "\" + $env:USERNAME
 
@@ -230,7 +242,28 @@ $script:SearchResult = New-Object -ComObject 'Microsoft.Update.UpdateColl'
 $script:Cycles = 0
 $script:CycleUpdateCount = 0
 
+function Get-State {
+    if (Test-Path -Path $StateFile) {
+        return Get-Content -Path $StateFile | ConvertFrom-Json
+    } else {
+        New-Item -Path $StateFile -ItemType "file" > $null
+        $stateProps = @{
+                    'started'=0;
+                    'backFromReboot'=0}
+        $stateObject = New-Object -TypeName PSObject -Prop $stateProps
+        ConvertTo-Json -InputObject $stateObject | Set-Content -Path $StateFile
+        return $stateObject
+    }
+}
+
+function Set-Started($Value) {
+    $state = Get-State
+    $state.started = $Value
+    ConvertTo-Json -InputObject $state | Set-Content -Path $StateFile
+}
+
 Check-WindowsUpdates
+
 if ($global:MoreUpdates -eq 1) {
     Install-WindowsUpdates
 } else {
