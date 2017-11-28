@@ -54,7 +54,7 @@ function Check-ContinueRestartOrEnd() {
                 LogWrite "Restart Registry Entry Exists Already"
             }
             LogWrite "Restart Required - Restarting..."
-            Restart-Computer -Force
+            Restart-Computer
         }
         default {
             LogWrite "Unsure If A Restart Is Required"
@@ -178,6 +178,7 @@ function Check-WindowsUpdates() {
         Set-ItemProperty -Path $RegistryKey -Name $RegistryEntry -Value "C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -File $($script:ScriptPath) -MaxUpdatesPerCycle $($MaxUpdatesPerCycle)"
         Set-Started 1
         Restart-Computer -Force
+        break
     }
 
     LogWrite "Checking For Windows Updates"
@@ -248,8 +249,7 @@ function Get-State {
     } else {
         New-Item -Path $StateFile -ItemType "file" > $null
         $stateProps = @{
-                    'started'=0;
-                    'backFromReboot'=0}
+                    'started'=0}
         $stateObject = New-Object -TypeName PSObject -Prop $stateProps
         ConvertTo-Json -InputObject $stateObject | Set-Content -Path $StateFile
         return $stateObject

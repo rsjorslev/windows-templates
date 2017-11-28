@@ -63,15 +63,14 @@
 		},
 		{
 			"type": "powershell",
-			"script": "scripts/common/wu.ps1",
-			"start_retry_timeout": "120m",
-			"pause_before": "60s"
+			"script": "scripts/common/registry.ps1"
+		},
+		{
+			"type": "windows-restart"
 		},
 		{
 			"type": "powershell",
-			"script": "scripts/common/registry.ps1",
-			"start_retry_timeout": "300m",
-			"pause_before": "60s"
+			"inline": "Import-StartLayout -LayoutPath C:\\Windows\\packer\\default-startmenu.xml -MountPath $env:systemdrive\\"
 		}
 	]
 }

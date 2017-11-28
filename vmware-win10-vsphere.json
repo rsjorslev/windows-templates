@@ -96,26 +96,74 @@
         }
     }],
     "provisioners": [
-      {
-        "type":  "ansible",
-        "playbook_file": "ansible/win10ent.yml",
-        "groups": ["windows"],
-        "extra_arguments": [
-          "--connection", "packer",
-          "--extra-vars", "ansible_shell_type=powershell ansible_shell_executable=None"
-        ]
-      },
-      {
-        "type": "windows-restart"
-      },
-      {
-        "type": "powershell",
-        "script": "scripts/common/save_shutdown_command.ps1"
-      },
-      {
-        "type": "file",
-        "source": "scripts/common/winrm_ansible.ps1",
-        "destination": "C:/Windows/packer/winrm_ansible.ps1"
-      }
-    ]
+  		{
+  			"type": "windows-shell",
+  			"inline": ["mkdir c:\\Windows\\packer"]
+  		},
+  		{
+  			"type": "file",
+  			"source": "files/",
+  			"destination": "C:/Windows/packer"
+  		},
+  		{
+  			"type": "ansible",
+  			"playbook_file": "ansible/win10_baseline.yml",
+  			"groups": [
+  				"windows"
+  			],
+  			"extra_arguments": [
+  				"--connection", "packer",
+  				"--extra-vars", "ansible_shell_type=powershell ansible_shell_executable=None",
+  				"--extra-vars", "@files/baseline.json"
+  			]
+  		},
+  		{
+  			"type": "windows-restart"
+  		},
+  		{
+  			"type": "ansible",
+  			"playbook_file": "ansible/win10_office365.yml",
+  			"groups": [
+  				"windows"
+  			],
+  			"extra_arguments": [
+  				"--connection", "packer",
+  				"--extra-vars", "ansible_shell_type=powershell ansible_shell_executable=None",
+  				"--extra-vars", "@files/office365.json"
+  			]
+  		},
+  		{
+  			"type": "windows-restart"
+  		},
+  		{
+  			"type": "powershell",
+  			"script": "scripts/common/packages_installer.ps1"
+  		},
+  		{
+  			"type": "powershell",
+  			"script": "scripts/win10/Remove-BuiltInAppx.ps1",
+  			"start_retry_timeout": "120m",
+  			"pause_before": "60s"
+  		},
+  		{
+  			"type": "powershell",
+  			"script": "scripts/common/registry.ps1"
+  		},
+  		{
+  			"type": "windows-restart"
+  		},
+  		{
+  			"type": "powershell",
+  			"inline": "Import-StartLayout -LayoutPath C:\\Windows\\packer\\default-startmenu.xml -MountPath $env:systemdrive\\"
+  		}
+  	],
+    "post-processors": [{
+      "type": "vsphere-template",
+      "host": "vcsa01.tstdmn.dk",
+      "insecure": true,
+      "username": "administrator@vsphere.local",
+      "password": "{{user `vc_pass`}}",
+      "datacenter": "Datacenter",
+      "folder": "/Templates"
+    }]
 }
