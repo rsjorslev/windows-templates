@@ -38,7 +38,7 @@
         "boot_wait": "2m",
         "floppy_files": [
             "answer_files/win2016/Autounattend.xml",
-            "scripts/common/winrm.ps1"
+            "scripts/common/winrm_packer.ps1"
         ],
         "vmx_data": {
           "memsize": "{{user `memory`}}",
@@ -85,7 +85,7 @@
         "boot_wait": "2m",
         "floppy_files": [
             "answer_files/win2016/Autounattend.xml",
-            "scripts/common/winrm.ps1"
+            "scripts/common/winrm_packer.ps1"
         ],
         "vmx_data": {
           "memsize": "{{user `memory`}}",
@@ -97,22 +97,38 @@
     }],
     "provisioners": [
       {
-        "type":  "ansible",
-        "playbook_file": "ansible/win2016std.yml",
-        "groups": ["windows"],
-        "extra_arguments": [
-          "--connection", "packer",
-          "--extra-vars", "ansible_shell_type=powershell ansible_shell_executable=None"
-        ]
+  			"type": "windows-shell",
+  			"inline": ["mkdir c:\\Windows\\packer"]
+  		},
+  		{
+  			"type": "file",
+  			"source": "files/",
+  			"destination": "C:/Windows/packer"
+  		},
+  		{
+  			"type": "ansible",
+  			"playbook_file": "ansible/win2016std.yml",
+  			"groups": [
+  				"windows"
+  			],
+  			"extra_arguments": [
+  				"--connection", "packer",
+  				"--extra-vars", "ansible_shell_type=powershell ansible_shell_executable=None"
+  			]
+  		},
+  		{
+  			"type": "powershell",
+  			"script": "scripts/common/packages_installer.ps1"
+  		},
+      {
+        "type": "powershell",
+        "script": "scripts/common/save_shutdown_command.ps1",
+        "start_retry_timeout": "120m",
+        "pause_before": "60s"
       },
       {
         "type": "powershell",
-        "script": "scripts/common/save_shutdown_command.ps1"
-      },
-      {
-        "type": "file",
-        "source": "scripts/common/winrm_ansible.ps1",
-        "destination": "C:/Windows/packer/winrm_ansible.ps1"
+        "script": "scripts/common/registry.ps1"
       }
     ],
     "post-processors": [{

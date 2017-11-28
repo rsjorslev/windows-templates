@@ -98,7 +98,8 @@
     "provisioners": [
   		{
   			"type": "windows-shell",
-  			"inline": ["mkdir c:\\Windows\\packer"]
+  			"inline": ["mkdir c:\\Windows\\packer"],
+        "pause_before": "120s"
   		},
   		{
   			"type": "file",
@@ -146,16 +147,20 @@
   			"pause_before": "60s"
   		},
   		{
-  			"type": "powershell",
-  			"script": "scripts/common/registry.ps1"
-  		},
-  		{
   			"type": "windows-restart"
   		},
   		{
   			"type": "powershell",
   			"inline": "Import-StartLayout -LayoutPath C:\\Windows\\packer\\default-startmenu.xml -MountPath $env:systemdrive\\"
-  		}
+  		},
+      {
+        "type": "powershell",
+        "script": "scripts/common/save_shutdown_command.ps1"
+      },
+      {
+        "type": "powershell",
+        "script": "scripts/common/registry.ps1"
+      }
   	],
     "post-processors": [{
       "type": "vsphere-template",
